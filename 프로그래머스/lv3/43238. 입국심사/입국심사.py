@@ -1,25 +1,19 @@
 def solution(n, times):
-    # n : 입국심사를 기다리는 사람 수
-    # times : 각 심사관이 한 명을 심사하는데 걸리는 시간
-    
-    left = min(times) #최소 : 1명이 가장 빠른 심사관에게 감
-    right = max(times)*n #최대 : n명이 가장 느린 심사관에게 감
-    
-    while left<=right:
-        mid = (left + right) // 2 #중앙값의 시간
-        
-        #중앙값일 때 심사 가능한 사람 수를 계산한다.
-        mid_person = 0 
-        for time in times:
-            mid_person += mid//time
-            #모든 심사관을 거치지 않아도 mid분 동안 n명보다 많은 사람을 심사한다면 for문 탈출
-            if mid_person > n:
-                break 
+    start = 1  # 최소 시간
+    end = max(times) * n  # 최대 시간
 
-        if mid_person < n: #심사해야하는 인원수보다 적다면
-            left = mid + 1
-        else: #심사해야하는 인원수보다 많거나 같다면
-            answer = mid 
-            right = mid - 1
+    answer = 0
+    while start <= end:
+        mid = (start + end) // 2  # 중간 시간
+
+        count = 0  # mid 시간 동안 처리 가능한 사람 수
+        for t in times:
+            count += mid // t
+
+        if count >= n:  # mid 시간 동안 처리 가능한 사람 수가 n보다 크거나 같으면
+            answer = mid  # answer를 갱신하고
+            end = mid - 1  # 더 적은 시간에서의 가능성을 확인하기 위해 end를 줄임
+        else:
+            start = mid + 1  # mid 시간 동안 처리 가능한 사람 수가 n보다 작으면 start를 늘림
+
     return answer
-        
