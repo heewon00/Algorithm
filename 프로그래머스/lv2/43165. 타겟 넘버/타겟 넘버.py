@@ -1,19 +1,19 @@
-
-from collections import deque
-
 def solution(numbers, target):
     answer=0
-    queue=deque()
-    queue.append([numbers[0],0])
-    queue.append([-1*numbers[0],0])
+    n = len(numbers)
     
-    while queue:
-        temp, idx = queue.popleft()
-        idx+=1
-        if idx<len(numbers):
-            queue.append([temp+numbers[idx],idx])
-            queue.append([temp-numbers[idx],idx])
-        else:
-            if target==temp:
-                answer+=1   
+    def dfs(idx, total):
+        nonlocal answer
+        
+        if idx == n:
+            if total == target: #끝까지 다 돌았을때 합이 target이라면
+                answer+=1
+            return
+        
+        #아니라면
+        dfs(idx + 1, total + numbers[idx])
+        dfs(idx + 1, total - numbers[idx])
+    
+    dfs(0,0)
     return answer
+        
