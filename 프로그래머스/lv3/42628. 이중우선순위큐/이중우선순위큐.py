@@ -19,4 +19,4 @@ def solution(operations):
     if not answer:
         return [0,0]
     else:
-        return [max(answer),answer[0]]
+        return [max(answer),min(answer)]
