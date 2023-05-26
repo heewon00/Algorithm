@@ -1,25 +1,22 @@
-from heapq import heappush, heappop
+import heapq
+def solution(operations):
+    answer = []
+    
+    for i in operations:
+        command, num = i.split()
 
-def solution(arguments):
-    max_heap = []
-    min_heap = []
-    for arg in arguments:
-        if arg == "D 1":
-            if max_heap != []:
-                heappop(max_heap)
-                if max_heap == [] or -max_heap[0] < min_heap[0]:
-                    min_heap = []
-                    max_heap = []
-        elif arg == "D -1":
-            if min_heap != []:
-                heappop(min_heap)
-                if min_heap == [] or -max_heap[0] < min_heap[0]:
-                    max_heap = []
-                    min_heap = []
-        else:
-            num = int(arg[2:])
-            heappush(max_heap, -num)
-            heappush(min_heap, num)
-    if min_heap == []:
-        return [0, 0]
-    return [-heappop(max_heap), heappop(min_heap)]
+        if command=='I':
+            heapq.heappush(answer,int(num))
+        else: #D
+            if not answer:
+                continue
+            if num=='-1': #최소
+                heapq.heappop(answer)
+            else: #최대
+                answer.remove(max(answer))
+                heapq.heapify(answer)
+        print(answer)
+    if not answer:
+        return [0,0]
+    else:
+        return [max(answer),answer[0]]
